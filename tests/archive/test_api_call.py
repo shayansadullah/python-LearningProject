@@ -3,7 +3,7 @@ import pytest
 from playwright.async_api import async_playwright, expect
 from src.utils.apiBase import APIUtils
 
-@pytest.mark.skip(reason="This is missing APIUtils??")
+@pytest.mark.skip(reason="test_e2e_web_api is an end-to-end test that requires a live server and may not be suitable for regular test runs.")
 @pytest.mark.asyncio
 async def test_e2e_web_api():
     async with async_playwright() as playwright:

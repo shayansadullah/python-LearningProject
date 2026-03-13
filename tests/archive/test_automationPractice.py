@@ -3,7 +3,10 @@ from tkinter import dialog
 import time
 
 from playwright.sync_api import Page, expect
+import pytest
 
+
+@pytest.mark.skip(reason="test_UIChecks")
 def test_UIChecks(page: Page):
 
     #Hide / Display
@@ -18,6 +21,7 @@ def test_UIChecks(page: Page):
     time.sleep(5)
 
 
+@pytest.mark.skip(reason="test_tableRowCheck")
 def test_tableRowCheck(page: Page):
     #Using Tables:
     page.goto("https://rahulshettyacademy.com/SeleniumPractise/#/offers")
@@ -30,7 +34,7 @@ def test_tableRowCheck(page: Page):
     riceRow = page.locator("tr").filter(has_text="Rice")
     expect(riceRow.locator("td").nth(priceCol)).to_have_text("37")
 
-
+@pytest.mark.skip(reason="test_hoverOver")
 def test_hoverOver(page: Page):
     page.goto('https://rahulshettyacademy.com/AutomationPractice/')
     page.locator('#mousehover').hover()

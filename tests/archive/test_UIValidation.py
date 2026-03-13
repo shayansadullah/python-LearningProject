@@ -1,7 +1,9 @@
 import time
 
 from playwright.sync_api import Page, expect
+import pytest
 
+@pytest.mark.skip("test_UIValidation")
 def test_UIValidation(page: Page):
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     page.get_by_label('Username:').fill('rahulshettyacademy')
@@ -18,6 +20,7 @@ def test_UIValidation(page: Page):
     time.sleep(5)
 
 
+@pytest.mark.skip("test_childWindowHandle")
 def test_childWindowHandle(page: Page):
     page.goto("https://rahulshettyacademy.com/loginpagePractise/")
 

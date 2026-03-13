@@ -11,6 +11,7 @@ async def test_pageObject_usage(authenticated_page):
     assert "ADIDAS ORIGINAL" in cart_item
 
 
+@pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_pageObject_usage2(authenticated_page):
     """Test using authenticated page - reuses saved authentication state"""

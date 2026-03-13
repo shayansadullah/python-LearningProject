@@ -1,5 +1,6 @@
 import pytest
 
+@pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_first_authenticated_access(authenticated_page):
     """Verify first test has authenticated access"""

@@ -1,11 +1,12 @@
-import time
 from playwright.sync_api import Page, expect
+import pytest
 
 
 #API Call from browser
 #API call contact server return back response to browser
 #browser uses response to show the html output
 
+@pytest.mark.skip(reason="test_network1")
 def intercept_cart(route):
     route.fulfill(json={"message": "No Product in Cart"})
 

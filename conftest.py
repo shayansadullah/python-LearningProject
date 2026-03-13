@@ -9,17 +9,11 @@ def user_credentials(request):
     return request.param
 
 @pytest_asyncio.fixture(scope='session')
-async def authentication_state(request):
+async def authentication_state(browser_type_launch_args, browser_name):
     """Login once per session and save authentication state to file"""
     from src.utils.getCredentialsDetails import CredentialsReader
     from src.pageObjects.LoginPage import LoginPage
-
-    # Get browser type
-    try:
-        browser_names = request.config.getoption("browser")
-        browser_name = browser_names[0] if isinstance(browser_names, list) and browser_names else "chromium"
-    except:
-        browser_name = "chromium"
+    from playwright.async_api import async_playwright
 
     # Get credentials
     test_data = CredentialsReader()
@@ -28,35 +22,38 @@ async def authentication_state(request):
     state_file = "auth_state.json"
 
     # Perform login once and save state
-    async with async_playwright() as playwright:
-        if browser_name == "chromium":
-            browser = await playwright.chromium.launch(headless=False)
-        elif browser_name == "firefox":
-            browser = await playwright.firefox.launch(headless=False)
-        elif browser_name == "webkit":
-            browser = await playwright.webkit.launch(headless=False)
-        else:
-            browser = await playwright.chromium.launch(headless=False)
+    # Use async_playwright().start() instead of context manager to avoid event loop conflict
+    playwright = await async_playwright().start()
 
-        context = await browser.new_context()
-        page = await context.new_page()
+    if browser_name == "chromium":
+        browser = await playwright.chromium.launch(headless=False)
+    elif browser_name == "firefox":
+        browser = await playwright.firefox.launch(headless=False)
+    elif browser_name == "webkit":
+        browser = await playwright.webkit.launch(headless=False)
+    else:
+        browser = await playwright.chromium.launch(headless=False)
 
-        # Login once
-        print("\n🔐 Performing login (once per session)...")
-        loginPage = LoginPage(page)
-        await loginPage.navigate()
-        await loginPage.login(credentials)
+    context = await browser.new_context()
+    page = await context.new_page()
 
-        # Wait for navigation to dashboard after login
-        await page.wait_for_url("**/dashboard/dash", timeout=10000)
-        print(f"   - Navigated to dashboard: {page.url}")
+    # Login once
+    print("\n🔐 Performing login (once per session)...")
+    loginPage = LoginPage(page)
+    await loginPage.navigate()
+    await loginPage.login(credentials)
 
-        # Save authentication state
-        await context.storage_state(path=state_file)
-        print(f"✅ Authentication state saved to {state_file}")
+    # Wait for navigation to dashboard after login
+    await page.wait_for_url("**/dashboard/dash", timeout=10000)
+    print(f"   - Navigated to dashboard: {page.url}")
 
-        await context.close()
-        await browser.close()
+    # Save authentication state
+    await context.storage_state(path=state_file)
+    print(f"✅ Authentication state saved to {state_file}")
+
+    await context.close()
+    await browser.close()
+    await playwright.stop()
 
     yield state_file
 
@@ -66,37 +63,34 @@ async def authentication_state(request):
 
 
 @pytest_asyncio.fixture(scope='function')
-async def authenticated_page(request, authentication_state):
+async def authenticated_page(authentication_state, browser_name):
     """Provides a browser page with pre-loaded authentication state"""
     from src.pageObjects.DashboardPage import DashboardPage
+    from playwright.async_api import async_playwright
 
-    # Get browser type
-    try:
-        browser_names = request.config.getoption("browser")
-        browser_name = browser_names[0] if isinstance(browser_names, list) and browser_names else "chromium"
-    except:
-        browser_name = "chromium"
+    # Use async_playwright().start() instead of context manager to avoid event loop conflict
+    playwright = await async_playwright().start()
 
-    async with async_playwright() as playwright:
-        if browser_name == "chromium":
-            browser = await playwright.chromium.launch(headless=False)
-        elif browser_name == "firefox":
-            browser = await playwright.firefox.launch(headless=False)
-        elif browser_name == "webkit":
-            browser = await playwright.webkit.launch(headless=False)
-        else:
-            browser = await playwright.chromium.launch(headless=False)
+    if browser_name == "chromium":
+        browser = await playwright.chromium.launch(headless=False)
+    elif browser_name == "firefox":
+        browser = await playwright.firefox.launch(headless=False)
+    elif browser_name == "webkit":
+        browser = await playwright.webkit.launch(headless=False)
+    else:
+        browser = await playwright.chromium.launch(headless=False)
 
-        # Create context with saved authentication state
-        context = await browser.new_context(storage_state=authentication_state)
-        page = await context.new_page()
+    # Create context with saved authentication state
+    context = await browser.new_context(storage_state=authentication_state)
+    page = await context.new_page()
 
-        # Navigate directly to dashboard (already authenticated)
-        await page.goto('https://rahulshettyacademy.com/client/#/dashboard/dash', wait_until='networkidle')
+    # Navigate directly to dashboard (already authenticated)
+    await page.goto('https://rahulshettyacademy.com/client/#/dashboard/dash', wait_until='networkidle')
 
-        # Return DashboardPage object
-        dashboardPage = DashboardPage(page)
-        yield dashboardPage
+    # Return DashboardPage object
+    dashboardPage = DashboardPage(page)
+    yield dashboardPage
 
-        await context.close()
-        await browser.close()
+    await context.close()
+    await browser.close()
+    await playwright.stop()
