@@ -94,3 +94,4 @@ async def authenticated_page(authentication_state, browser_name):
     await context.close()
     await browser.close()
     await playwright.stop()
+
