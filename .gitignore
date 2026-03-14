@@ -149,6 +149,8 @@ credentials.json
 **/credentials.json
 secrets.json
 **/secrets.json
+pagePractice.json
+**/pagePractice.json
 
 # Spyder project settings
 .spyderproject

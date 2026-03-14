@@ -1,40 +1,53 @@
 # Python Learning Project
 
-A Python test automation project using Playwright and Pytest for learning purposes.
+A Python test automation project using **Playwright** and **Pytest** for learning web UI and API testing with async/await patterns.
 
-## Project Structure
+## 🎯 What This Project Covers
+
+- ✅ Async/await patterns in Python with Playwright
+- ✅ Page Object Model (POM) design pattern
+- ✅ Data-driven testing with JSON files
+- ✅ Pytest fixtures and conftest configuration
+- ✅ API testing and mocking
+- ✅ UI validation and assertions
+- ✅ Window/popup handling
+- ✅ Authentication state management
+- ✅ Test markers for selective execution
+
+## 📁 Project Structure
 
 ```
 python-LearningProject/
 ├── src/
 │   ├── data/
 │   │   ├── credentials.json          # Your credentials (gitignored)
-│   │   └── credentials.json.example  # Template file
+│   │   ├── credentials.json.example  # Template file
+│   │   └── pagePractice.json         # Test data for parameterization
 │   ├── pageObjects/
 │   │   ├── __init__.py
-│   │   ├── CartPage.py
-│   │   ├── DashboardPage.py
-│   │   └── LoginPage.py
+│   │   ├── CartPage.py               # Cart page object
+│   │   ├── DashboardPage.py          # Dashboard page object
+│   │   └── LoginPage.py              # Login page object
 │   └── utils/
 │       ├── __init__.py
-│       ├── apiBase.py
-│       └── getCredentialsDetails.py
+│       ├── apiBase.py                # API testing utilities
+│       └── getCredentialsDetails.py  # Credential management
 ├── tests/
-│   ├── test_api_call_framework.py
-│   ├── test_api_call.py
-│   ├── test_api_mock_response.py
-│   ├── test_automationPractice.py
-│   ├── test_login_verification.py
-│   ├── test_pageObject_usage.py
-│   ├── test_playwrightBasics.py
-│   └── test_UIValidation.py
-├── conftest.py
-├── pytest.ini
-├── requirements.txt
+│   ├── test_api_call_framework.py    # API framework demos
+│   ├── test_api_mock_response.py     # API mocking examples
+│   ├── test_automationPractice.py    # General automation practice
+│   ├── test_login_verification.py    # Login with fixtures
+│   ├── test_pageObject_usage.py      # POM pattern usage
+│   ├── test_playwrightBasics.py      # Core Playwright concepts
+│   └── test_UIValidation.py          # UI validation & popup handling
+├── conftest.py                        # Pytest fixtures & configuration
+├── pytest.ini                         # Pytest settings & markers
+├── requirements.txt                   # Python dependencies
+├── auth_state.json                    # Saved authentication state
 └── README.md
 ```
 
-## Setup Instructions
+## 🚀 Setup Instructions
 
 ### 1. Create Virtual Environment
 
@@ -60,10 +73,10 @@ playwright install
 Create a `credentials.json` file in the `src/data/` folder:
 
 ```powershell
-Copy-Item src/data/credentials.json.example src/data/credentials.json
+Copy-Item src\data\credentials.json.example src\data\credentials.json
 ```
 
-Then edit `src/data/credentials.json` with your actual credentials:
+Then edit `src\data\credentials.json` with your actual credentials:
 
 ```json
 {
@@ -78,7 +91,7 @@ Then edit `src/data/credentials.json` with your actual credentials:
 
 **Note:** The `credentials.json` file is gitignored for security.
 
-## Running Tests
+## 🧪 Running Tests
 
 ### Run All Tests
 
@@ -89,7 +102,7 @@ pytest
 ### Run Specific Test File
 
 ```powershell
-pytest tests/test_login_verification.py
+pytest tests/test_UIValidation.py
 ```
 
 ### Run with Verbose Output
@@ -107,95 +120,225 @@ pytest --headed
 ### Run Specific Test by Name
 
 ```powershell
-pytest -k "test_name"
+pytest -k "test_childWindowHandle"
 ```
 
-## Test Categories
+### Run Smoke Tests Only
 
-- **UI Tests**: Login verification, automation practice, page object patterns
-- **API Tests**: Basic API calls, framework usage, mock responses
-- **Playwright Basics**: Core Playwright functionality demonstrations
+```powershell
+pytest -m smoke
+```
 
-## How Fixtures Work: conftest.py Explained
+### Run Tests with Live Output
 
-Understanding how `test_login_verification.py` interacts with `conftest.py` fixtures (in simple terms):
+```powershell
+pytest -s
+```
 
-### 1. The Test is the Customer
+## 🔑 Key Concepts
+
+### Async/Await in Playwright
+
+This project uses Playwright's **async API**, which requires understanding when to use `await`:
+
+#### ✅ **DO await** - Actions that interact with the browser:
+```python
+await page.goto('url')              # Navigate
+await page.click('.button')         # Click
+await page.fill('input', 'text')    # Type
+await page.check('#checkbox')       # Check
+await asyncio.sleep(5)              # Async sleep
+await expect(locator).to_be_visible() # Assertions
+```
+
+#### ❌ **DON'T await** - Locators (they're just selectors):
+```python
+locator = page.locator('.button')           # No await
+filtered = locator.filter(has_text='text')  # No await
+first_item = locator.first                  # No await
+```
+
+**Rule:** If it's *finding* something → no `await`. If it's *doing* something → use `await`.
+
+### The `with` Statement
+
+Use `with` for automatic resource cleanup:
 
 ```python
-async def test_first_authenticated_access(authenticated_page):
+# File handling
+with open('file.txt', 'r') as f:
+    content = f.read()
+# File automatically closes
+
+# Async context managers
+async with async_playwright() as playwright:
+    browser = await playwright.chromium.launch()
+# Browser automatically closes
+
+# Popup handling
+async with page.expect_popup() as popup_info:
+    await page.click('.link-that-opens-popup')
+childpage = await popup_info.value
 ```
 
-Your test says: **"I need an `authenticated_page` to do my work"** - just like ordering "I need a burger"
+**Rule:** If something needs `.close()` or cleanup → use `with`.
 
-### 2. conftest.py is the Kitchen
+### Data-Driven Testing
 
-Pytest looks at the parameter name `authenticated_page` and searches for a "recipe" (fixture) with that exact name in `conftest.py`:
+Use `@pytest.mark.parametrize` with JSON data:
 
 ```python
-@pytest_asyncio.fixture(scope='function')
-async def authenticated_page(authentication_state, browser_name):
+import json
+
+with open("src/data/pagePractice.json") as f:
+    test_data = json.load(f)
+
+@pytest.mark.parametrize('user_credentials', test_data['user_credentials'])
+async def test_UIValidation(user_credentials):
+    await page.fill('username', user_credentials['userEmail'])
+    await page.fill('password', user_credentials['userPassword'])
 ```
 
-**Found it!** This fixture is the recipe for making an `authenticated_page`.
+### Popup/Child Window Handling
 
-### 3. But Wait - The Recipe Needs Ingredients!
-
-The `authenticated_page` fixture says: **"I need `authentication_state` first"**
-
-So pytest looks for THAT recipe:
+Pattern for handling popups in async Playwright:
 
 ```python
-@pytest_asyncio.fixture(scope='session')
-async def authentication_state(browser_type_launch_args, browser_name):
+# Set up listener and trigger popup
+async with page.expect_popup() as popup_info:
+    await page.locator(".link").click()
+
+# Work with popup after the block
+childpage = await popup_info.value
+text = await childpage.locator(".content").text_content()
 ```
 
-### 4. The Chain of Preparation
+## 📋 Test Categories
 
-Here's the order things happen:
+| Test File | Description | Key Concepts |
+|-----------|-------------|--------------|
+| `test_UIValidation.py` | UI validation with data-driven tests, popup handling | `@pytest.mark.parametrize`, `async with page.expect_popup()` |
+| `test_login_verification.py` | Authentication with fixtures | Session-scoped fixtures, auth state management |
+| `test_pageObject_usage.py` | Page Object Model pattern | POM design, reusable page classes |
+| `test_playwrightBasics.py` | Core Playwright functionality | Locators, selectors, basic interactions |
+| `test_automationPractice.py` | General automation exercises | Form filling, dropdowns, checkboxes |
+| `test_api_call_framework.py` | API testing with framework | Requests library, API utilities |
+| `test_api_mock_response.py` | API mocking and network interception | Mock responses, network control |
+
+### Test Markers
+
+Defined in `pytest.ini`:
+
+- **`@pytest.mark.smoke`** - Quick validation tests for CI/CD pipelines
+
+Run smoke tests: `pytest -m smoke`
+
+## 🔧 How Fixtures Work: conftest.py Explained
+
+Understanding how tests interact with fixtures in `conftest.py`:
+
+### The Flow
 
 ```
-Test asks for: authenticated_page
-    ↓
-authenticated_page asks for: authentication_state
-    ↓
-authentication_state runs ONCE per session:
-    - Opens browser
-    - Logs in
-    - Saves login cookies to file
-    - Returns the filename
-    ↓
-authenticated_page runs for EACH test:
-    - Takes the saved cookie file
-    - Opens new browser with those cookies
-    - Goes to dashboard (already logged in!)
-    - Gives the DashboardPage to your test
-    ↓
-Your test runs:
-    - Gets ready-to-use authenticated page
-    - Checks URL
-    - Does assertions
+1. Test declares what it needs:
+   async def test_login(authenticated_page):
+                       ^^^^^^^^^^^^^^^^^^
+                       Parameter name = fixture name
+
+2. Pytest finds the fixture in conftest.py:
+   @pytest_asyncio.fixture(scope='function')
+   async def authenticated_page(authentication_state):
+
+3. Fixture declares its dependencies:
+   This fixture needs 'authentication_state' first
+
+4. Pytest resolves the dependency chain:
+   authentication_state (session) → runs once
+       ↓
+   authenticated_page (function) → runs per test
+       ↓
+   test receives ready-to-use page object
 ```
 
-### 5. The Magic: Pytest Does All The Wiring
+### Fixture Scopes
 
-You **never** call these fixtures yourself. Just by writing:
+- **`scope='session'`** - Created once for all tests (e.g., login state)
+- **`scope='function'`** - Created fresh for each test (e.g., new page)
 
+### Key Fixtures in This Project
+
+- **`authentication_state`** - Logs in once, saves cookies to `auth_state.json`
+- **`authenticated_page`** - Loads saved auth state, returns logged-in page
+- **`user_credentials`** - Provides test credentials from JSON
+
+## 📚 Important Libraries
+
+| Library | Purpose | Import Example |
+|---------|---------|----------------|
+| `playwright` | Browser automation | `from playwright.async_api import async_playwright, expect` |
+| `pytest` | Testing framework | `import pytest` |
+| `pytest-asyncio` | Async test support | `@pytest.mark.asyncio` |
+| `asyncio` | Python async utilities | `import asyncio` / `await asyncio.sleep()` |
+| `requests` | HTTP/API testing | `import requests` |
+
+## 🐛 Common Issues & Solutions
+
+### Issue: `TypeError: object Locator can't be used in 'await' expression`
+**Solution:** Don't await locators, only await actions:
 ```python
-async def test_first_authenticated_access(authenticated_page):
-                                          ^^^^^^^^^^^^^^^^^^
-                                          This name is the key!
+# ❌ Wrong
+locator = await page.locator('.button')
+
+# ✅ Correct
+locator = page.locator('.button')
+await locator.click()
 ```
 
-Pytest automatically:
-1. Sees the parameter name
-2. Finds the matching fixture in conftest.py
-3. Runs all dependencies in the right order
-4. Passes you the final result
+### Issue: `TypeError: object NoneType can't be used in 'await' expression`
+**Solution:** Use `asyncio.sleep()` instead of `time.sleep()`:
+```python
+# ❌ Wrong
+await time.sleep(5)
 
-### 6. Scope = How Often It's Made
+# ✅ Correct
+await asyncio.sleep(5)
+```
 
-- **`scope='session'`** - Make it ONCE and reuse (like brewing a pot of coffee at the start of the day)
-- **`scope='function'`** - Make it fresh for EACH test (like making a fresh sandwich for each customer)
+### Issue: `'AsyncEventContextManager' object does not support the context manager protocol`
+**Solution:** Use `async with` for async context managers:
+```python
+# ❌ Wrong
+with page.expect_popup() as popup:
 
-**That's why login happens once, but you get a fresh browser page for each test!**
+# ✅ Correct
+async with page.expect_popup() as popup:
+```
+
+### Issue: `'coroutine' object has no attribute 'locator'`
+**Solution:** Await the popup value:
+```python
+# ❌ Wrong
+childpage = newPage_info.value
+
+# ✅ Correct
+childpage = await newPage_info.value
+```
+
+## 📖 Learning Resources
+
+- [Playwright Python Docs](https://playwright.dev/python/docs/intro)
+- [Pytest Documentation](https://docs.pytest.org/)
+- [Python Asyncio Guide](https://docs.python.org/3/library/asyncio.html)
+- [Page Object Model Pattern](https://playwright.dev/python/docs/pom)
+
+## 🤝 Contributing
+
+This is a learning project. Feel free to experiment, add new tests, and try different patterns!
+
+## 📝 Notes
+
+- Always activate the virtual environment before running tests
+- Credentials are gitignored for security
+- Authentication state is cached in `auth_state.json` for performance
+- Use `pytest -s` to see print statements during test execution
+- Use `--headed` flag to watch tests run in visible browser
