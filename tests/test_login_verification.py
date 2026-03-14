@@ -12,6 +12,7 @@ async def test_first_authenticated_access(authenticated_page):
     assert '/dashboard/dash' in current_url, "Should be on dashboard page"
 
 
+@pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_second_authenticated_access(authenticated_page):
     """Verify second test reuses authentication without login"""
