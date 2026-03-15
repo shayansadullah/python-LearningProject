@@ -26,13 +26,13 @@ async def authentication_state(browser_type_launch_args, browser_name):
     playwright = await async_playwright().start()
 
     if browser_name == "chromium":
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
     elif browser_name == "firefox":
-        browser = await playwright.firefox.launch(headless=False)
+        browser = await playwright.firefox.launch(headless=True)
     elif browser_name == "webkit":
-        browser = await playwright.webkit.launch(headless=False)
+        browser = await playwright.webkit.launch(headless=True)
     else:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
 
     context = await browser.new_context()
     page = await context.new_page()
@@ -72,13 +72,13 @@ async def authenticated_page(authentication_state, browser_name):
     playwright = await async_playwright().start()
 
     if browser_name == "chromium":
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
     elif browser_name == "firefox":
-        browser = await playwright.firefox.launch(headless=False)
+        browser = await playwright.firefox.launch(headless=True)
     elif browser_name == "webkit":
-        browser = await playwright.webkit.launch(headless=False)
+        browser = await playwright.webkit.launch(headless=True)
     else:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
 
     # Create context with saved authentication state
     context = await browser.new_context(storage_state=authentication_state)

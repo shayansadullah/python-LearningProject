@@ -11,7 +11,7 @@ with open("src/data/pagePractice.json") as f:
 @pytest.mark.asyncio
 async def test_thirdCheck():
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto("https://rahulshettyacademy.com")
@@ -21,7 +21,7 @@ async def test_thirdCheck():
 @pytest.mark.parametrize('user_credentials', user_credentials_list)
 async def test_SuccessfulLogin(user_credentials):
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
@@ -36,7 +36,7 @@ async def test_SuccessfulLogin(user_credentials):
 @pytest.mark.asyncio
 async def test_FailedLogin():
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
@@ -52,7 +52,7 @@ async def test_FailedLogin():
 @pytest.mark.parametrize('user_credentials', user_credentials_list)
 async def test_RunFirefox(user_credentials):
     async with async_playwright() as playwright:
-        browser = await playwright.firefox.launch(headless=False)
+        browser = await playwright.firefox.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto("https://rahulshettyacademy.com/loginpagePractise/")

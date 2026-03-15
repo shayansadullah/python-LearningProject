@@ -20,7 +20,7 @@ with open("src/data/credentials.json") as f:
 @pytest.mark.parametrize('user_credentials', user_credentials_list)
 async def test_network1(user_credentials):
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto('https://rahulshettyacademy.com/client')

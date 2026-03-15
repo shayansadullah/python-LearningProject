@@ -7,7 +7,7 @@ import pytest
 async def test_UIChecks():
     async with async_playwright() as playwright:
         #Hide / Display
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto("https://rahulshettyacademy.com/AutomationPractice")
@@ -25,7 +25,7 @@ async def test_UIChecks():
 async def test_tableRowCheck():
     async with async_playwright() as playwright:
         #Using Tables:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto("https://rahulshettyacademy.com/SeleniumPractise/#/offers")
@@ -43,7 +43,7 @@ async def test_tableRowCheck():
 @pytest.mark.asyncio
 async def test_hoverOver():
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=False)
+        browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
         await page.goto('https://rahulshettyacademy.com/AutomationPractice/')
