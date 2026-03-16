@@ -135,6 +135,93 @@ pytest -m smoke
 pytest -s
 ```
 
+## 🎬 Automatic Test Tracing
+
+This project includes **automatic Playwright tracing** for all tests. Every test automatically records screenshots, snapshots, and network activity without any manual configuration.
+
+### How It Works
+
+The `page` fixture in `conftest.py` automatically:
+- ✅ Starts tracing with `screenshots=True, snapshots=True, sources=True`
+- ✅ Saves trace files to `test-results/{test_name}/trace.zip`
+- ✅ Cleans up after each test
+
+### What Gets Traced
+
+Every test that uses the `page` fixture automatically captures:
+- 📸 Screenshots at each step
+- 🌐 Network requests and responses
+- 📝 Console logs
+- 🎯 DOM snapshots
+- 📂 Source code
+
+### Viewing Traces
+
+After running tests, view the trace files with Playwright's trace viewer:
+
+```powershell
+playwright show-trace test-results/test_childWindowHandle/trace.zip
+```
+
+Or open the trace viewer in your browser:
+
+```powershell
+playwright show-trace test-results/test_UIValidation[user_credentials0]/trace.zip
+```
+
+### Trace Viewer Features
+
+The trace viewer provides:
+- **Timeline** - See every action in chronological order
+- **Screenshots** - Visual snapshot at each step
+- **Network** - All HTTP requests/responses
+- **Console** - Browser console messages
+- **Source** - Test code that triggered each action
+- **Metadata** - Test duration, browser info, etc.
+
+### Usage in Tests
+
+Simply use the `page` fixture - tracing happens automatically:
+
+```python
+@pytest.mark.asyncio
+async def test_example(page):
+    await page.goto("https://example.com")
+    await page.click(".button")
+    # Trace automatically saved to test-results/test_example/trace.zip
+```
+
+For authenticated tests, use `authenticated_page` (also includes automatic tracing):
+
+```python
+@pytest.mark.asyncio
+async def test_with_auth(authenticated_page):
+    dashboardPage = authenticated_page
+    # Tracing automatically enabled
+```
+
+### Trace File Location
+
+```
+test-results/
+├── test_UIValidation[user_credentials0]/
+│   └── trace.zip
+├── test_childWindowHandle/
+│   └── trace.zip
+├── test_thirdCheck/
+│   └── trace.zip
+└── ...
+```
+
+**Note:** The `test-results/` directory is gitignored to avoid committing large trace files.
+
+### Why This Matters
+
+- 🐛 **Debug failures faster** - See exactly what happened step-by-step
+- 📊 **Visual proof** - Screenshots show UI state at each action
+- 🔍 **Network analysis** - Inspect API calls and responses
+- ⏱️ **Performance insights** - See timing of each operation
+
 ## 🔑 Key Concepts
 
 ### Async/Await in Playwright
