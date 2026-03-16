@@ -63,7 +63,7 @@ async def authentication_state(browser_type_launch_args, browser_name):
 
 
 @pytest_asyncio.fixture(scope='function')
-async def authenticated_page(authentication_state, browser_name):
+async def authenticated_page(authentication_state, browser_name, request):
     """Provides a browser page with pre-loaded authentication state"""
     from src.pageObjects.DashboardPage import DashboardPage
     from playwright.async_api import async_playwright
@@ -82,6 +82,10 @@ async def authenticated_page(authentication_state, browser_name):
 
     # Create context with saved authentication state
     context = await browser.new_context(storage_state=authentication_state)
+
+    # Start tracing
+    await context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
     page = await context.new_page()
 
     # Navigate directly to dashboard (already authenticated)
@@ -91,6 +95,37 @@ async def authenticated_page(authentication_state, browser_name):
     dashboardPage = DashboardPage(page)
     yield dashboardPage
 
+    # Stop tracing and save
+    test_name = request.node.name
+    trace_dir = f"test-results/{test_name}"
+    os.makedirs(trace_dir, exist_ok=True)
+    await context.tracing.stop(path=f"{trace_dir}/trace.zip")
+
+    await context.close()
+    await browser.close()
+    await playwright.stop()
+
+
+@pytest_asyncio.fixture(scope='function')
+async def page(request):
+    """Provides a page with automatic tracing"""
+    playwright = await async_playwright().start()
+    browser = await playwright.chromium.launch(headless=True)
+    context = await browser.new_context()
+
+    # Start tracing
+    await context.tracing.start(screenshots=True, snapshots=True, sources=True)
+
+    page = await context.new_page()
+    yield page
+
+    # Stop tracing and save
+    test_name = request.node.name
+    trace_dir = f"test-results/{test_name}"
+    os.makedirs(trace_dir, exist_ok=True)
+    await context.tracing.stop(path=f"{trace_dir}/trace.zip")
+
+    await page.close()
     await context.close()
     await browser.close()
     await playwright.stop()
