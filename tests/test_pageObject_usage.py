@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_pageObject_usage(authenticated_page):

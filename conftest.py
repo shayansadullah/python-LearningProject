@@ -1,19 +1,22 @@
+import os
+
 import pytest
 import pytest_asyncio
 from playwright.async_api import async_playwright
-import os
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def user_credentials(request):
     return request.param
 
-@pytest_asyncio.fixture(scope='session')
+
+@pytest_asyncio.fixture(scope="session")
 async def authentication_state(browser_type_launch_args, browser_name):
     """Login once per session and save authentication state to file"""
-    from src.utils.getCredentialsDetails import CredentialsReader
-    from src.pageObjects.LoginPage import LoginPage
     from playwright.async_api import async_playwright
+
+    from src.pageObjects.LoginPage import LoginPage
+    from src.utils.getCredentialsDetails import CredentialsReader
 
     # Get credentials
     test_data = CredentialsReader()
@@ -22,7 +25,7 @@ async def authentication_state(browser_type_launch_args, browser_name):
     state_file = "auth_state.json"
 
     # Perform login once and save state
-    # Use async_playwright().start() instead of context manager to avoid event loop conflict
+    # Use async_playwright().start() to avoid event loop conflict
     playwright = await async_playwright().start()
 
     if browser_name == "chromium":
@@ -59,16 +62,17 @@ async def authentication_state(browser_type_launch_args, browser_name):
 
     # Cleanup (commented out to keep auth_state.json for inspection)
     if os.path.exists(state_file):
-         os.remove(state_file)
+        os.remove(state_file)
 
 
-@pytest_asyncio.fixture(scope='function')
+@pytest_asyncio.fixture(scope="function")
 async def authenticated_page(authentication_state, browser_name, request):
     """Provides a browser page with pre-loaded authentication state"""
-    from src.pageObjects.DashboardPage import DashboardPage
     from playwright.async_api import async_playwright
 
-    # Use async_playwright().start() instead of context manager to avoid event loop conflict
+    from src.pageObjects.DashboardPage import DashboardPage
+
+    # Use async_playwright().start() to avoid event loop conflict
     playwright = await async_playwright().start()
 
     if browser_name == "chromium":
@@ -89,7 +93,10 @@ async def authenticated_page(authentication_state, browser_name, request):
     page = await context.new_page()
 
     # Navigate directly to dashboard (already authenticated)
-    await page.goto('https://rahulshettyacademy.com/client/#/dashboard/dash', wait_until='networkidle')
+    await page.goto(
+        "https://rahulshettyacademy.com/client/#/dashboard/dash",
+        wait_until="networkidle",
+    )
 
     # Return DashboardPage object
     dashboardPage = DashboardPage(page)
@@ -106,7 +113,7 @@ async def authenticated_page(authentication_state, browser_name, request):
     await playwright.stop()
 
 
-@pytest_asyncio.fixture(scope='function')
+@pytest_asyncio.fixture(scope="function")
 async def page(request):
     """Provides a page with automatic tracing"""
     playwright = await async_playwright().start()
@@ -129,4 +136,3 @@ async def page(request):
     await context.close()
     await browser.close()
     await playwright.stop()
-
