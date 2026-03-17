@@ -1,3 +1,5 @@
+"""Tests demonstrating Page Object Model usage with authentication."""
+
 import pytest
 
 

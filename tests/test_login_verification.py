@@ -1,3 +1,5 @@
+"""Tests for authentication state verification and session management."""
+
 import pytest
 
 

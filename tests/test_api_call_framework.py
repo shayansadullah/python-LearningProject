@@ -1,3 +1,5 @@
+"""End-to-end tests combining API and web automation."""
+
 import json
 
 import pytest
@@ -15,6 +17,12 @@ with open("src/data/credentials.json") as f:
 @pytest.mark.asyncio
 @pytest.mark.parametrize("user_credentials", user_credentials_list)
 async def test_e2e_web_api(user_credentials):
+    """Test end-to-end flow using API for order creation.
+
+    Args:
+        user_credentials: Parametrized user credentials.
+
+    """
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch(headless=True)
         context = await browser.new_context()

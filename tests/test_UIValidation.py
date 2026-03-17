@@ -1,3 +1,5 @@
+"""UI validation tests for login and product selection functionality."""
+
 import asyncio
 import json
 
@@ -13,6 +15,13 @@ with open("src/data/pagePractice.json") as f:
 @pytest.mark.asyncio
 @pytest.mark.parametrize("user_credentials", user_credentials_list)
 async def test_UIValidation(page, user_credentials):
+    """Test UI validation with login, product selection, and checkout flow.
+
+    Args:
+        page: Playwright page fixture.
+        user_credentials: Parametrized user credentials.
+
+    """
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     await page.get_by_label("Username:").fill(user_credentials["userEmail"])
     await page.get_by_label("Password:").fill(user_credentials["userPassword"])
@@ -31,6 +40,12 @@ async def test_UIValidation(page, user_credentials):
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_childWindowHandle(page):
+    """Test handling of child window popups.
+
+    Args:
+        page: Playwright page fixture.
+
+    """
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
 
     async with page.expect_popup() as newPage_info:

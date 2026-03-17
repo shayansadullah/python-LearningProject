@@ -1,3 +1,5 @@
+"""Tests for API response mocking and network interception."""
+
 import json
 
 import pytest
@@ -10,6 +12,12 @@ from playwright.async_api import expect
 
 @pytest.mark.smoke
 async def intercept_cart(route):
+    """Intercept and mock cart API response.
+
+    Args:
+        route: Playwright route object.
+
+    """
     await route.fulfill(json={"message": "No Product in Cart"})
 
 
@@ -22,6 +30,13 @@ with open("src/data/credentials.json") as f:
 @pytest.mark.asyncio
 @pytest.mark.parametrize("user_credentials", user_credentials_list)
 async def test_network1(page, user_credentials):
+    """Test network interception with mocked API responses.
+
+    Args:
+        page: Playwright page fixture.
+        user_credentials: Parametrized user credentials.
+
+    """
     await page.goto("https://rahulshettyacademy.com/client")
     await page.route(
         "https://rahulshettyacademy.com/api/ecom/user/get-cart-products/63c993f3568c3e9fb1fcd1c2",

@@ -1,3 +1,5 @@
+"""Basic Playwright functionality tests including login scenarios."""
+
 import json
 
 import pytest
@@ -11,6 +13,12 @@ with open("src/data/pagePractice.json") as f:
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_thirdCheck(page):
+    """Test basic page navigation.
+
+    Args:
+        page: Playwright page fixture.
+
+    """
     await page.goto("https://rahulshettyacademy.com")
 
 
@@ -18,6 +26,13 @@ async def test_thirdCheck(page):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("user_credentials", user_credentials_list)
 async def test_SuccessfulLogin(page, user_credentials):
+    """Test successful login with valid credentials.
+
+    Args:
+        page: Playwright page fixture.
+        user_credentials: Parametrized user credentials.
+
+    """
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     await page.get_by_label("Username:").fill(user_credentials["userEmail"])
     await page.get_by_label("Password:").fill(user_credentials["userPassword"])
@@ -29,6 +44,12 @@ async def test_SuccessfulLogin(page, user_credentials):
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_FailedLogin(page):
+    """Test failed login with invalid credentials.
+
+    Args:
+        page: Playwright page fixture.
+
+    """
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     await page.get_by_label("Username:").fill("rahulshettyacademy")
     await page.get_by_label("Password:").fill("Learning@830$3mK2-abc")
@@ -42,6 +63,13 @@ async def test_FailedLogin(page):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("user_credentials", user_credentials_list)
 async def test_RunFirefox(page, user_credentials):
+    """Test login functionality in Firefox browser.
+
+    Args:
+        page: Playwright page fixture.
+        user_credentials: Parametrized user credentials.
+
+    """
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/")
     await page.get_by_label("Username:").fill(user_credentials["userEmail"])
     await page.get_by_label("Password:").fill(user_credentials["userPassword"])

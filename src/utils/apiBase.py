@@ -1,3 +1,5 @@
+"""API utility functions for authentication and order management."""
+
 from playwright.async_api import Playwright
 
 orderPayload = {
@@ -21,7 +23,19 @@ orderPayload = {
 
 
 class APIUtils:
+    """Utility class for API operations including authentication and orders."""
+
     async def getToken(self, playwright: Playwright, user_credentials: dict):
+        """Get authentication token via API login.
+
+        Args:
+            playwright: Playwright instance for API requests.
+            user_credentials: Dictionary containing userEmail and userPassword.
+
+        Returns:
+            str: Authentication token.
+
+        """
         api_request_context = await playwright.request.new_context(
             base_url="https://rahulshettyacademy.com"
         )
@@ -35,6 +49,16 @@ class APIUtils:
         return token
 
     async def createOrder(self, playwright: Playwright, user_credentials: dict):
+        """Create an order via API.
+
+        Args:
+            playwright: Playwright instance for API requests.
+            user_credentials: Dictionary containing userEmail and userPassword.
+
+        Returns:
+            dict: Dictionary with message and token.
+
+        """
         token = await self.getToken(playwright, user_credentials)
         api_request_context = await playwright.request.new_context(
             base_url="https://rahulshettyacademy.com"
@@ -48,4 +72,10 @@ class APIUtils:
         return {"message": response_body["message"], "token": token}
 
     async def getOrderId(self):
+        """Get the product ID from order payload.
+
+        Returns:
+            str: Product ID from the order payload.
+
+        """
         return orderPayload["product"]["_id"]

@@ -1,3 +1,5 @@
+"""Automation practice tests for UI interactions and element manipulation."""
+
 import asyncio
 
 import pytest
@@ -7,6 +9,12 @@ from playwright.async_api import expect
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_UIChecks(page):
+    """Test UI visibility checks, hide/show elements, and alert boxes.
+
+    Args:
+        page: Playwright page fixture.
+
+    """
     # Hide / Display
     await page.goto("https://rahulshettyacademy.com/AutomationPractice")
     await expect(page.get_by_placeholder("Hide/Show Example")).to_be_visible()
@@ -22,6 +30,12 @@ async def test_UIChecks(page):
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_tableRowCheck(page):
+    """Test table data validation and column/row filtering.
+
+    Args:
+        page: Playwright page fixture.
+
+    """
     # Using Tables:
     await page.goto("https://rahulshettyacademy.com/SeleniumPractise/#/offers")
 
@@ -37,6 +51,12 @@ async def test_tableRowCheck(page):
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_hoverOver(page):
+    """Test mouse hover interactions and element clicking.
+
+    Args:
+        page: Playwright page fixture.
+
+    """
     await page.goto("https://rahulshettyacademy.com/AutomationPractice/")
     await page.locator("#mousehover").hover()
     await page.get_by_role("link", name="Top").click()
