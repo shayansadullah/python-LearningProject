@@ -9,7 +9,7 @@ class CredentialsReader:
         )
 
     def get_cretdetials_details(self):
-        """Read credentials from credentials.json file"""
+        """Read credentials from credentials.json file."""
         with open(self.data_path) as file:
             data = json.load(file)
         return data["user_credentials"]

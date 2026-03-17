@@ -1,3 +1,9 @@
+"""Pytest configuration and fixtures for Playwright test automation.
+
+Provides fixtures for browser automation, authentication state management,
+and test tracing capabilities.
+"""
+
 import os
 
 import pytest
@@ -7,12 +13,21 @@ from playwright.async_api import async_playwright
 
 @pytest.fixture(scope="session")
 def user_credentials(request):
+    """Provide user credentials from parametrized test data.
+
+    Args:
+        request: Pytest request object containing parametrized credentials.
+
+    Returns:
+        dict: User credentials dictionary with userEmail and userPassword.
+
+    """
     return request.param
 
 
 @pytest_asyncio.fixture(scope="session")
 async def authentication_state(browser_type_launch_args, browser_name):
-    """Login once per session and save authentication state to file"""
+    """Login once per session and save authentication state to file."""
     from playwright.async_api import async_playwright
 
     from src.pageObjects.LoginPage import LoginPage
@@ -67,7 +82,7 @@ async def authentication_state(browser_type_launch_args, browser_name):
 
 @pytest_asyncio.fixture(scope="function")
 async def authenticated_page(authentication_state, browser_name, request):
-    """Provides a browser page with pre-loaded authentication state"""
+    """Provides a browser page with pre-loaded authentication state."""
     from playwright.async_api import async_playwright
 
     from src.pageObjects.DashboardPage import DashboardPage
@@ -115,7 +130,7 @@ async def authenticated_page(authentication_state, browser_name, request):
 
 @pytest_asyncio.fixture(scope="function")
 async def page(request):
-    """Provides a page with automatic tracing"""
+    """Provides a page with automatic tracing."""
     playwright = await async_playwright().start()
     browser = await playwright.chromium.launch(headless=True)
     context = await browser.new_context()

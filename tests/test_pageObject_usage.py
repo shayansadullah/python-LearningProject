@@ -4,7 +4,7 @@ import pytest
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_pageObject_usage(authenticated_page):
-    """Test using authenticated page - login performed once in session"""
+    """Test using authenticated page - login performed once in session."""
     dashBoardPage = authenticated_page
     cartPage = await dashBoardPage.add_to_cart("ADIDAS ORIGINAL")
     await cartPage.navigate()
@@ -16,7 +16,7 @@ async def test_pageObject_usage(authenticated_page):
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_pageObject_usage2(authenticated_page):
-    """Test using authenticated page - reuses saved authentication state"""
+    """Test using authenticated page - reuses saved authentication state."""
     dashBoardPage = authenticated_page
     cartPage = await dashBoardPage.add_to_cart("ADIDAS ORIGINAL")
     await cartPage.navigate()

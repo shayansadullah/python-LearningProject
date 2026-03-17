@@ -4,7 +4,7 @@ import pytest
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_first_authenticated_access(authenticated_page):
-    """Verify first test has authenticated access"""
+    """Verify first test has authenticated access."""
     dashBoardPage = authenticated_page
     # Check current URL and page state
     current_url = dashBoardPage.page.url
@@ -16,7 +16,7 @@ async def test_first_authenticated_access(authenticated_page):
 @pytest.mark.smoke
 @pytest.mark.asyncio
 async def test_second_authenticated_access(authenticated_page):
-    """Verify second test reuses authentication without login"""
+    """Verify second test reuses authentication without login."""
     dashBoardPage = authenticated_page
     # Check we're immediately on dashboard (no login needed)
     current_url = dashBoardPage.page.url
