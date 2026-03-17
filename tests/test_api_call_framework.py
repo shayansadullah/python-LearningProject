@@ -31,9 +31,9 @@ async def test_e2e_web_api(user_credentials):
         order_response = await api_utils.createOrder(playwright, user_credentials)
         message = order_response["message"]
         token = order_response["token"]
-        assert message == "Product Added To Cart", (
-            f"Expected 'Product Added To Cart' but got '{message}'"
-        )
+        assert (
+            message == "Product Added To Cart"
+        ), f"Expected 'Product Added To Cart' but got '{message}'"
 
         orderId = await api_utils.getOrderId()
 
