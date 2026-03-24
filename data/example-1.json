@@ -1,0 +1,10 @@
+[{
+    "name": "Example 1",
+    "description": "This is an example JSON file.",
+    "version": "1.0.0"
+},
+{
+    "name": "Example 2",
+    "description": "This is another example JSON file.",
+    "version": "2.0.0"
+}]
