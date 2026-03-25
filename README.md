@@ -53,13 +53,13 @@ python-LearningProject/
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 ```
 
 ### 2. Install Dependencies
 
 ```powershell
-pip install -r requirements.txt
+.\.venv\Scripts\pip.exe install -r requirements.txt
 ```
 
 ### 3. Install Playwright Browsers
