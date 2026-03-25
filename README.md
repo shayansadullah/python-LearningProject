@@ -53,7 +53,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 # Install dependencies
-pip install -r requirements.txt
+.\.venv\Scripts\pip.exe install -r requirements.txt
 playwright install
 
 # Configure credentials (copy example and edit with your credentials)
