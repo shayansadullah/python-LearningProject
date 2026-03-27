@@ -25,3 +25,4 @@ print(
 
 print(f"DataFrame show describe:\n{df_phone_prices.describe()}\n")
 print(f"DataFrame show correlation:\n{df_phone_prices.corr()}\n")
+
