@@ -7,7 +7,7 @@ class PandasHelper:
     """Helper class for pandas operations."""
 
     @staticmethod
-    def read_excel_helper(file_path, sheet_name, header=None):
+    def read_excel_helper(file_path, sheet_name, header=None) -> pd.DataFrame | None:
         """Read an Excel file and return a DataFrame.
 
         Args:
@@ -27,6 +27,24 @@ class PandasHelper:
             return None
 
     @staticmethod
+    def read_json_helper(file_path) -> pd.DataFrame | None:
+        """Read a JSON file and return a DataFrame.
+
+        Args:
+            file_path: Path to the JSON file.
+
+        Returns:
+            A pandas DataFrame containing the data from the JSON file.
+
+        """
+        try:
+            df = pd.read_json(file_path)
+            return df
+        except Exception as e:
+            print(f"Error reading JSON file: {e}")
+            return None
+
+    @staticmethod
     def output_dataframe_info(df, sheet_name):
         """Print basic information about the dataframe.
 
@@ -43,4 +61,3 @@ class PandasHelper:
             print(f"Columns: {df.columns.tolist()}")
             print(f"Shape: {df.shape}")
             print(f"\n{df.to_string()}")
-
