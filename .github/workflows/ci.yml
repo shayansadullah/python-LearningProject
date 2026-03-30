@@ -64,10 +64,11 @@ jobs:
         env:
             # Repository secret — set at: GitHub repo → Settings → Secrets and variables → Actions → Secrets tab → New repository secret
             # Name: CREDENTIALS_JSON  |  Value: full contents of your data/credentials.json
+            # Name: CREDENTIALS_PRACTICE_JSON  |  Value: full contents of your data/credentials_practice.json
             CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
+            CREDENTIALS_PRACTICE_JSON: ${{ secrets.CREDENTIALS_PRACTICE_JSON }}
         steps:
             - uses: actions/checkout@v4
-
             - name: Set up Python
               uses: actions/setup-python@v5
               with:
@@ -88,7 +89,8 @@ jobs:
 
             - name: Write credentials file
               run: echo "$CREDENTIALS_JSON" > data/credentials.json
-
+            - name: Write practice credentials file
+              run: echo "$CREDENTIALS_PRACTICE_JSON" > data/credentials_practice.json
             - name: Run E2E tests (headless)
               run: |
                   pytest tests/test_automationPractice.py \
