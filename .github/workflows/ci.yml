@@ -90,7 +90,7 @@ jobs:
             - name: Write credentials file
               run: echo "$CREDENTIALS_JSON" > data/credentials.json
             - name: Write practice credentials file
-              run: echo "$CREDENTIALS_PRACTICE_JSON" > data/credentials_practice.json
+              run: echo "$CREDENTIALS_PRACTICE_JSON" > data/pagePractice.json
             - name: Run E2E tests (headless)
               run: |
                   pytest tests/test_automationPractice.py \
