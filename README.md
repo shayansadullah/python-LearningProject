@@ -56,6 +56,13 @@ python -m venv .venv
 .\.venv\Scripts\pip.exe install -r requirements.txt
 playwright install
 
+# Install pre-commit hooks into git (required once per clone)
+python pre-commit-4.5.1.pyz install
+
+# Run all hooks against all files to fix existing issues before your first commit
+# Hooks auto-fix what they can (line endings, formatting); re-run until all pass
+python pre-commit-4.5.1.pyz run --all-files
+
 # Configure credentials (copy example and edit with your credentials)
 Copy-Item data\credentials.json.example data\credentials.json
 ```
