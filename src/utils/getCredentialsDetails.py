@@ -12,7 +12,7 @@ class CredentialsReader:
     def __init__(self):
         """Initialize CredentialsReader with path to credentials.json."""
         self.data_path = os.path.join(
-            os.path.dirname(__file__), "..", "data", "credentials.json"
+            os.path.dirname(__file__), "..", "..", "data", "credentials.json"
         )
 
     def get_cretdetials_details(self):

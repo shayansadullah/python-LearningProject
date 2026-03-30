@@ -21,7 +21,7 @@ async def intercept_cart(route):
     await route.fulfill(json={"message": "No Product in Cart"})
 
 
-with open("src/data/credentials.json") as f:
+with open("data/credentials.json") as f:
     test_data = json.load(f)
     user_credentials_list = test_data["user_credentials"]
 

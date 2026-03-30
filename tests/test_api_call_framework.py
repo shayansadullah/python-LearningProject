@@ -8,7 +8,7 @@ from playwright.async_api import async_playwright, expect
 from src.pageObjects.LoginPage import LoginPage
 from src.utils.apiBase import APIUtils
 
-with open("src/data/credentials.json") as f:
+with open("data/credentials.json") as f:
     test_data = json.load(f)
     user_credentials_list = test_data["user_credentials"]
 

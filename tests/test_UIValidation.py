@@ -6,7 +6,7 @@ import json
 import pytest
 from playwright.async_api import expect
 
-with open("src/data/pagePractice.json") as f:
+with open("data/pagePractice.json") as f:
     test_data = json.load(f)
     user_credentials_list = test_data["user_credentials"]
 

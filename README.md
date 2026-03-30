@@ -57,7 +57,7 @@ python -m venv .venv
 playwright install
 
 # Configure credentials (copy example and edit with your credentials)
-Copy-Item src\data\credentials.json.example src\data\credentials.json
+Copy-Item data\credentials.json.example data\credentials.json
 ```
 
 ## 🧪 Running Tests
