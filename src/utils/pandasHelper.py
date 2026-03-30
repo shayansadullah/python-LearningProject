@@ -1,7 +1,8 @@
 """Helper utilities for pandas DataFrame operations."""
 
-import pandas as pd
+import json
 
+import pandas as pd
 
 class PandasHelper:
     """Helper class for pandas operations."""
@@ -38,14 +39,18 @@ class PandasHelper:
 
         """
         try:
-            df = pd.read_json(file_path)
-            return df
+            with open(file_path) as f:
+                data = json.load(f)
+            if isinstance(data, list):
+                return data
+            return pd.DataFrame(data)
         except Exception as e:
             print(f"Error reading JSON file: {e}")
             return None
 
+
     @staticmethod
-    def output_dataframe_info(df, sheet_name):
+    def output_dataframe_info(df, sheet_name) -> None:
         """Print basic information about the dataframe.
 
         Args:
