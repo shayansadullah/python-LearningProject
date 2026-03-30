@@ -1,3 +1,5 @@
+"""Tests for pandas operations with realistic data."""
+
 import pandas as pd
 
 car_brands = ["Brand", "Model", "Year", "Price", "Transmission"]

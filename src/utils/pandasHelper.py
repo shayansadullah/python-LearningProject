@@ -4,6 +4,7 @@ import json
 
 import pandas as pd
 
+
 class PandasHelper:
     """Helper class for pandas operations."""
 
@@ -47,7 +48,6 @@ class PandasHelper:
         except Exception as e:
             print(f"Error reading JSON file: {e}")
             return None
-
 
     @staticmethod
     def output_dataframe_info(df, sheet_name) -> None:

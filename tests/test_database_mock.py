@@ -1,6 +1,6 @@
 """Examples of mocking SQL database operations."""
 
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -67,9 +67,7 @@ class UserDatabase:
         results = cursor.fetchall()
         cursor.close()
 
-        return [
-            {"id": row[0], "name": row[1], "email": row[2]} for row in results
-        ]
+        return [{"id": row[0], "name": row[1], "email": row[2]} for row in results]
 
 
 # Test Examples using unittest.mock
@@ -170,9 +168,7 @@ def test_get_all_users():
     assert users[1]["name"] == "Bob"
     assert users[2]["name"] == "Charlie"
 
-    mock_cursor.execute.assert_called_once_with(
-        "SELECT id, name, email FROM users"
-    )
+    mock_cursor.execute.assert_called_once_with("SELECT id, name, email FROM users")
 
 
 # Example 2: Using @patch decorator to mock sqlite3 module

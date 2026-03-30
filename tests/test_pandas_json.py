@@ -1,10 +1,9 @@
 """Test for reading JSON data using pandas."""
 
-import json
-
 import pandas as pd
 
 from src.utils import pandasHelper as ph
+
 
 def test_read_json_helper():
     """Read the JSON file."""

@@ -39,4 +39,3 @@ async def test_excel_pandas(file_path, sheet1, sheet2, header):
     # Merge the two dataframes
     merged_df = order_details_df.merge(order_address_df, on="ProductID", how="left")
     ph.PandasHelper.output_dataframe_info(merged_df, "Merged DataFrame")
-

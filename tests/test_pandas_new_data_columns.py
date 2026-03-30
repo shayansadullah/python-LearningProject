@@ -4,6 +4,7 @@ import pandas as pd
 
 from src.utils import pandasHelper as ph
 
+
 def test_read_json_helper():
     """Read the JSON file."""
     json_file_path = "data/example-4.json"
