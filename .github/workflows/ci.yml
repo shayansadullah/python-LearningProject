@@ -1,0 +1,101 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    # -------------------------------------------------------
+    # Job 1: Lint — runs pre-commit hooks (ruff, file checks)
+    # -------------------------------------------------------
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.13"
+                  cache: pip
+
+            - name: Run pre-commit hooks
+              run: python pre-commit-4.5.1.pyz run --all-files
+
+    # -------------------------------------------------------
+    # Job 2: Unit tests — pandas and mock tests (no browser)
+    # -------------------------------------------------------
+    test-unit:
+        runs-on: ubuntu-latest
+        needs: lint
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.13"
+                  cache: pip
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Run pandas and mock tests
+              run: |
+                  pytest tests/test_pandas_excel.py \
+                         tests/test_pandas_json.py \
+                         tests/test_pandas_new_data_columns.py \
+                         tests/test_pandas_phone_prices.py \
+                         tests/test_pandas_with_realistic_data.py \
+                         tests/test_database_mock.py \
+                         -v
+
+    # -------------------------------------------------------
+    # Job 3: E2E tests — Playwright (browser + credentials)
+    # -------------------------------------------------------
+    test-e2e:
+        runs-on: ubuntu-latest
+        needs: lint
+        env:
+            # Repository secret — set at: GitHub repo → Settings → Secrets and variables → Actions → Secrets tab → New repository secret
+            # Name: CREDENTIALS_JSON  |  Value: full contents of your data/credentials.json
+            CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.13"
+                  cache: pip
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Install Playwright browsers
+              run: playwright install --with-deps chromium
+
+            - name: Write credentials file
+              run: echo "$CREDENTIALS_JSON" > data/credentials.json
+
+            - name: Run E2E tests (headless)
+              run: |
+                  pytest tests/test_automationPractice.py \
+                         tests/test_login_verification.py \
+                         tests/test_api_call_framework.py \
+                         tests/test_api_mock_response.py \
+                         tests/test_pageObject_usage.py \
+                         tests/test_playwrightBasics.py \
+                         tests/test_UIValidation.py \
+                         --browser chromium \
+                         -v
+
+            - name: Upload Playwright traces on failure
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-traces
+                  path: test-results/
+                  retention-days: 7
