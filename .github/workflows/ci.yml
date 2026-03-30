@@ -21,8 +21,11 @@ jobs:
                   python-version: "3.13"
                   cache: pip
 
+            - name: Install pre-commit
+              run: pip install pre-commit
+
             - name: Run pre-commit hooks
-              run: python pre-commit-4.5.1.pyz run --all-files
+              run: pre-commit run --all-files
 
     # -------------------------------------------------------
     # Job 2: Unit tests — pandas and mock tests (no browser)
