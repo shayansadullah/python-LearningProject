@@ -55,6 +55,14 @@ jobs:
                          tests/test_database_mock.py \
                          -v
 
+            - name: Upload test report
+              uses: actions/upload-artifact@v4
+              if: always()
+              with:
+                  name: unit-test-report
+                  path: playwright-report/
+                  retention-days: 14
+
     # -------------------------------------------------------
     # Job 3: E2E tests — Playwright (browser + credentials)
     # -------------------------------------------------------
@@ -103,8 +111,17 @@ jobs:
                          --browser chromium \
                          -v
 
+            - name: Upload E2E test report
+              uses: actions/upload-artifact@v4
+              if: always()
+              with:
+                  name: e2e-test-report
+                  path: playwright-report/
+                  retention-days: 14
+
             - name: Upload Playwright traces on failure
               uses: actions/upload-artifact@v4
+              if: failure()
               with:
                   name: playwright-traces
                   path: test-results/
