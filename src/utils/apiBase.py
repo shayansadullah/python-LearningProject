@@ -3,23 +3,23 @@
 from playwright.async_api import Playwright
 
 orderPayload = {
-    "_id": "63c993f3568c3e9fb1fcd1c2",
-    "product": {
-        "_id": "6960eae1c941646b7a8b3ed3",
-        "productName": "ADIDAS ORIGINAL",
-        "productCategory": "electronics",
-        "productSubCategory": "mobiles",
-        "productPrice": 11500,
-        "productDescription": "Apple phone",
-        "productImage": "https://rahulshettyacademy.com/api/ecom/uploads/productImage_1767959265156.jpg",
-        "productRating": "0",
-        "productTotalOrders": "0",
-        "productStatus": "true",
-        "productFor": "women",
-        "productAddedBy": "admin",
-        "__v": 0,
-    },
-}
+        "_id":"69ceb9c2f86ba51a6541cc34",
+        "product":{
+            "_id":"6960eae1c941646b7a8b3ed3",
+            "productName":"ADIDAS ORIGINAL",
+            "productCategory":"electronics",
+            "productSubCategory":"mobiles",
+            "productPrice":11500,
+            "productDescription":"Apple phone",
+            "productImage":"https://rahulshettyacademy.com/api/ecom/uploads/productImage_1767959265156.jpg",
+            "productRating":"0",
+            "productTotalOrders":"0",
+            "productStatus":"true",
+            "productFor":"women",
+            "productAddedBy":
+            "admin","__v":0
+            }
+        }
 
 
 class APIUtils:
@@ -66,9 +66,10 @@ class APIUtils:
         response = await api_request_context.post(
             "/api/ecom/user/add-to-cart",
             data=orderPayload,
-            headers={"Authorization": token, "Content-Type": "application/json"},
+            headers={"Authorization": token},
         )
         response_body = await response.json()
+        print(f"add-to-cart status: {response.status}, body: {response_body}")
         return {"message": response_body["message"], "token": token}
 
     async def getOrderId(self):
