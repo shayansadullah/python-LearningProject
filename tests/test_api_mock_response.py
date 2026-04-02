@@ -49,7 +49,7 @@ async def test_network1(page, user_credentials):
         user_credentials["userPassword"]
     )
     await page.get_by_role("button", name="Login").click()
-    await page.get_by_role("button", name="Cart").click()
+    await page.get_by_role("button", name="Cart").first.click()
     await expect(
         page.get_by_role("heading", name="No Products in Your Cart !")
     ).to_be_visible()
