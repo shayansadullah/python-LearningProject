@@ -3,23 +3,23 @@
 from playwright.async_api import Playwright
 
 orderPayload = {
-        "_id":"69ceb9c2f86ba51a6541cc34",
-        "product":{
-            "_id":"6960eae1c941646b7a8b3ed3",
-            "productName":"ADIDAS ORIGINAL",
-            "productCategory":"electronics",
-            "productSubCategory":"mobiles",
-            "productPrice":11500,
-            "productDescription":"Apple phone",
-            "productImage":"https://rahulshettyacademy.com/api/ecom/uploads/productImage_1767959265156.jpg",
-            "productRating":"0",
-            "productTotalOrders":"0",
-            "productStatus":"true",
-            "productFor":"women",
-            "productAddedBy":
-            "admin","__v":0
-            }
-        }
+    "_id": "69ceb9c2f86ba51a6541cc34",
+    "product": {
+        "_id": "6960eae1c941646b7a8b3ed3",
+        "productName": "ADIDAS ORIGINAL",
+        "productCategory": "electronics",
+        "productSubCategory": "mobiles",
+        "productPrice": 11500,
+        "productDescription": "Apple phone",
+        "productImage": "https://rahulshettyacademy.com/api/ecom/uploads/productImage_1767959265156.jpg",
+        "productRating": "0",
+        "productTotalOrders": "0",
+        "productStatus": "true",
+        "productFor": "women",
+        "productAddedBy": "admin",
+        "__v": 0,
+    },
+}
 
 
 class APIUtils:
