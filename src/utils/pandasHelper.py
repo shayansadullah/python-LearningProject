@@ -66,7 +66,7 @@ class PandasHelper:
             print(f"Columns: {df.columns.tolist()}")
             print(f"Shape: {df.shape}")
             print(f"\n{df.to_string()}")
-    
+
     @staticmethod
     def check_columns(df, expected_columns) -> bool:
         """Check if the DataFrame contains the expected columns.
