@@ -7,15 +7,17 @@ A Python learning project covering **Playwright/Pytest** test automation, **pand
 ```
 python-LearningProject/
 ├── data/
+│   ├── credentials.json.example      # Credentials template
+│   ├── example_lookup.xlsx           # Lookup table for Excel pandas practice
 │   ├── example-1.json                # Sample JSON data for pandas practice
-│   └── example-2.csv                 # Sample CSV data for pandas practice
+│   ├── example-2.csv                 # Sample CSV data for pandas practice
+│   ├── example-3.csv                 # Additional CSV data for pandas practice
+│   ├── example-4.json                # Additional JSON data for pandas practice
+│   ├── mobile-phone-data.csv         # Mobile phone dataset for pandas practice
+│   └── pagePractice.json.example     # Page practice data template
 ├── notebook/
 │   └── pandas.ipynb                  # Jupyter notebook for pandas learning
 ├── src/
-│   ├── data/
-│   │   ├── credentials.json          # Your credentials (gitignored)
-│   │   ├── credentials.json.example  # Template file
-│   │   └── pagePractice.json         # Test data for parameterization
 │   ├── pageObjects/
 │   │   ├── __init__.py
 │   │   ├── CartPage.py               # Cart page object
@@ -30,18 +32,22 @@ python-LearningProject/
 │   ├── test_api_call_framework.py    # API framework demos
 │   ├── test_api_mock_response.py     # API mocking examples
 │   ├── test_automationPractice.py    # General automation practice
-│   ├── test_excel_pandas.py          # Pandas Excel/DataFrame testing
+│   ├── test_database_mock.py         # Database mocking examples
 │   ├── test_login_verification.py    # Login with fixtures
-│   ├── test_new_data_pandas.py       # Pandas data manipulation
-│   ├── test_new_json_pandas.py       # JSON to DataFrame conversions
-│   ├── test_new_pandas_with_realistic_data.py  # Realistic pandas scenarios
 │   ├── test_pageObject_usage.py      # POM pattern usage
+│   ├── test_pandas_excel.py          # Pandas Excel/DataFrame testing
+│   ├── test_pandas_json.py           # JSON to DataFrame conversions
+│   ├── test_pandas_new_data_columns.py  # Pandas data manipulation
+│   ├── test_pandas_phone_prices.py   # Mobile phone price data analysis
+│   ├── test_pandas_with_realistic_data.py  # Realistic pandas scenarios
 │   ├── test_playwrightBasics.py      # Core Playwright concepts
 │   └── test_UIValidation.py          # UI validation & popup handling
+├── .pre-commit-config.yaml            # Pre-commit hook configuration
 ├── conftest.py                        # Pytest fixtures & configuration
 ├── pytest.ini                         # Pytest settings & markers
 ├── requirements.txt                   # Python dependencies
-├── auth_state.json                    # Saved authentication state
+├── requirements-dev.txt               # Development dependencies
+├── ruff.toml                          # Ruff linter configuration
 └── README.md
 ```
 
@@ -107,7 +113,9 @@ childpage = await popup_info.value
 
 **API:** `test_api_call_framework.py`, `test_api_mock_response.py`
 
-**Pandas:** `test_excel_pandas.py`, `test_new_data_pandas.py`, `test_new_json_pandas.py`, `test_new_pandas_with_realistic_data.py`
+**Database:** `test_database_mock.py`
+
+**Pandas:** `test_pandas_excel.py`, `test_pandas_json.py`, `test_pandas_new_data_columns.py`, `test_pandas_phone_prices.py`, `test_pandas_with_realistic_data.py`
 
 **Markers:** Use `@pytest.mark.smoke` for quick validation tests
 

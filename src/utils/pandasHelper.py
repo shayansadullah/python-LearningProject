@@ -66,3 +66,27 @@ class PandasHelper:
             print(f"Columns: {df.columns.tolist()}")
             print(f"Shape: {df.shape}")
             print(f"\n{df.to_string()}")
+    
+    @staticmethod
+    def check_columns(df, expected_columns) -> bool:
+        """Check if the DataFrame contains the expected columns.
+
+        Args:
+            df: The DataFrame to check.
+            expected_columns: A list of expected column names.
+
+        Returns:
+            True if all expected columns are present, False otherwise.
+
+        """
+        if df is None:
+            return False
+        missing = [col for col in expected_columns if col not in df.columns]
+        extra = [col for col in df.columns if col not in expected_columns]
+        if missing or extra:
+            if missing:
+                print(f"Missing expected columns: {missing}")
+            if extra:
+                print(f"Unexpected extra columns: {extra}")
+            return False
+        return True
