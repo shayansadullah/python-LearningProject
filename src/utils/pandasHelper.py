@@ -68,7 +68,7 @@ class PandasHelper:
             print(f"\n{df.to_string()}")
 
     @staticmethod
-    def check_columns(df, expected_columns) -> bool:
+    def check_columns_match_expected_columns(df, expected_columns) -> bool:
         """Check if the DataFrame contains the expected columns.
 
         Args:

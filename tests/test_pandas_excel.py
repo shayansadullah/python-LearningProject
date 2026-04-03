@@ -68,6 +68,6 @@ async def test_excel_columns_match_expected_columns(
         file_path, sheet_name=sheet1, header=header
     )
 
-    assert ph.PandasHelper.check_columns(
+    assert ph.PandasHelper.check_columns_match_expected_columns(
         order_details_df, expected_columns
     ), f"Column mismatch in sheet '{sheet1}'"
